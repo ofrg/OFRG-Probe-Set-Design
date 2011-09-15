@@ -1,0 +1,86 @@
+Instructions for running Probe Set Design scripts
+
+Requirements:
+
+1) A Windows machine is required to run the first script. A linux machine (or Cygwin)
+	is required to run best_probes.o (via makeprobes.pl), the probe set design program.
+	All other scripts can be run on Windows or Linux.
+
+2) The Perl programming language must be installed. Testing was done with
+	Perl 5.12.3 on Windows and Perl 5.10.1 on Linux, but will probably work 
+	with other versions.
+
+3) Perl modules required:
+	Win32::IEAutomation (on Windows only)
+	Config::Tiny
+	Bio::SeqIO
+
+4) If you are using a 64-bit machine you may need to download the 64-bit
+	version of AutoIt v3. Navigate to the IEAutomation folder and replace
+	the AutoItX3.dll with the 64-bit version. Be sure to rename the
+	64-bit .dll file to "AutoItX3.dll".
+
+5) IMPORTANT: replace the original WinClicker.pm that comes with IEAutomation with the
+	modified version that comes in this zip file, as it has additional functionality
+	required by the rdp_downloader.pl script.
+
+6) MOTHUR must be installed. Download from http://www.mothur.org/.
+
+7) best_probes.o must be compiled on your machine. The source code is included.
+
+8) An account must be set up on the Ribosomal Database Project's (RDP) website:
+	http://rdp.cme.msu.edu/. (Masked fasta files are not available for download without
+	an account).
+
+
+The scripts must be run in the following order:
+
+1) rdp_downloader.pl
+2) remove_variable_regions.pl
+3) remove_duplicate_sequences.pl
+4) column_distance.pl
+5) column_distance_qsub.pl (optional)
+6) column_distance_merge.pl (optional)
+7) column_distance_sort.pl
+8) makenamefiles.pl
+9) makeotus.pl
+10) training_seqs_maker.pl
+11) sequences2matrix_by_otu.pl
+12) makeprobes.pl
+
+
+Other notes:
+
+The scripts use one of two configuration files (probeset.conf, rdp_downloader.conf), 
+which contain various parameters that can be changed when desired. More detailed information 
+about the parameters can be found in the configuration files themselves. Intermediate 
+directories will be created as the scripts are run.
+
+The names of the scripts, as well as the default folder names, have been prepended with letters 
+from a-k, so as to keep them better organized and easier to start from the command line.
+
+View the headers of the Perl scripts for a description of what each script does.
+
+#rdp_downloader.pl
+This script must be run on a Windows machine, as it uses the Perl module Win32::IEAutomation 
+to interact with the Ribosomal Database Project's (RDP) website. Downloading the sequences 
+takes approximately 12-24 hours, if all goes well, but there may be glitches that require 
+restarting the script.
+
+Should it be necessary to restart, parameters are available in the rdp_downloader.conf file
+that allow restarting at a specified genus. Use the screen output and/or files already
+downloaded to determine where to start. The phylum for any genus must also be specified.
+
+Note that your RDP username and password must be added to the configuation file.
+
+#column_distance_qsub.pl
+The largest files can take days to process. If you have access to a cluster running Torque,
+this script will break the task into jobs and automatically submit them via the qsub command.
+
+#makeotus.pl
+Place a copy of the mothur program into the directory holding the distance matrices
+(default name is d_distances) before running makeotus.pl but after running column_distance.pl, 
+as the d_distances directory is created by it. Optionally, you may create the directory
+yourself and place the mothur progam in it.
+
+
