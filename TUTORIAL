@@ -1,0 +1,115 @@
+Tutorial for using the OFRG Probe Set Design processing pipeline.
+
+
+In order to make the tutorial as short as possible, the folder "a_maskedfastas"
+has be preloaded with a few fasta files from RDP.  This permits us to skip the
+first script (a_rdp_downloader.pl), which takes a long time to run.
+
+Be sure to look at the README file for important installation requirements.
+
+All scripts from b to i will use the file "probeset.conf" for information about
+which directories they should use to load and/or save data, among other things.
+The default values are fine for this tutorial, and running it is quite simple
+once everything has been installed properly. Notes about the a_rdp_downloader.pl
+script are at the end of this tutorial.
+
+
+1) Starting with the second script, run it by typing, "perl b_remove_variable_regions.pl"
+   at the command prompt.
+
+   When it is finished you will notice a new directory has been created, called,
+   "b_varregionsremoved". Several other scripts will also create new directories.
+
+2) Optionally, run the next script, "bb_remove_common_gaps.pl" in a similar manner.
+   Running this script will speed up the creation of distance matrices later.
+
+3) Run "c_remove_duplicate_sequences.pl".  You will see a new directory named,
+   "c_nodupe", and the number of duplicates found in each file is displayed onscreen.
+
+4) Run "d_column_distance.pl". One file in the tutorial is much larger than the
+   others and it will take much longer to make the distance matrix for it. 
+
+   In the probeset.conf file, the "maxsize" parameter in the [column_distance]
+   section determines which files are processed and which are skipped. The default
+   size is 6000000 bytes. All files larger than this are skipped.  The names
+   of the skipped files are saved to "large_files_skiped_by_column_distance.txt".
+
+   When necessary, large files can be broken into smaller jobs by using the
+   "db_column_distance_qsub.pl" script. See the comments at the beginning of
+   this file for instructions on how to use it. It is not necessary for this tutorial.
+
+   If "db_column_distance_qsub.pl" is used you must also run
+   "dc1_column_distance_merge.pl" to merge the partial distance matrix files created
+   by "the "db_column_distance_qsub.pl" script. An alternative version of the "dc1"
+   script is included ("dc2_column_distance_merge.pl") which performs the same
+   task but uses less RAM. It is not as well tested, however, so use with caution.
+
+5) Run "dd_column_distance_sort.pl". This script sorts all the distance matrices
+   so that the mothur program can operate more quickly.
+
+6) Run "e_makenamefiles.pl". This makes "namefiles" which are required for mothur.
+
+7) Run "f_makeotus.pl", which uses mothur to create OTUs.
+
+8) Run "g_training_seqs_maker.pl". This creates the training sequences file.
+
+9) Run "h_sequences2matrix_by_otu.pl". Enter "500" when prompted by the script, then
+   hit the return key. You will be again be prompted with the same question. This
+   time, enter "q" and hit the return key to continue.
+
+   The script will create a matrix file containing 500 of the most conserved
+   probes found in the sequences of the training sequences file.
+
+10) Run "i_makeprobes.pl".  One probe set will be created and placed in the
+   "i_probes" directory.
+
+   Note that if you chose a different number of probes in step 9) you will
+   need to change the filename for the input_matrix_file parameter to match it.
+   See the [makeprobes] section of the probeset.conf file.
+
+Other parameters exist and can be changed in the probeset.conf file, including
+many that are specific to the probe set design program itself.  Most of these are
+self explanatory or are described at the bottom of the configuration file or
+have been discussed in the paper.
+
+
+Running the a_rdp_downloader.pl script.
+
+This script uses the file "rdp_downloader.conf" and must be run on a Windows machine,
+as it uses a special Perl module and AutoIt to control the IE browser. See the
+README file for instructions on how to install these and other requirements.
+
+IMPORTANT: Before running this script you must open an account at the RDP website,
+           here: https://rdp.cme.msu.edu/user/createAcct.spr
+
+           You must add your username and password to the "rdp_downloader.conf"
+           file or the script will not be allowed to download the "mask" sequences
+           that are necessary for removing the variable regions in the sequences.
+
+           Make sure you have replaced the original WinClicker.pm module in the
+           directory where Win32::IEAutomation was installed with the version that 
+           came with this software, as it provides additional (and required)
+           functionality.
+
+           It will be necessary to use a computer dedicated to running this script
+           (while the script is running). Trying to use the computer for other 
+           tasks will inevitably cause the script to crash and/or make errors in
+           naming files for saving. Do not do this. Test it out to make sure it
+           runs okay, then stop the script and restart it before you leave work.
+           RDP doesn't really like an automated script putting a load on their servers, 
+           so doing it at night when fewer pages are being requested is a nice thing
+           to do anyway.
+
+This script may take 12 hours or more to download the files from the RDP website.
+Unfortunately, at the time of this writing, RDP does not provide an easy way to 
+download sequences on a per genus basis, necessitating the use of this script.
+
+If something goes wrong during the downloading of files the script will probably
+crash. Note the last (or second to last) Phylum and Genus that was downloaded.
+Add these to the "rdp_downloader.conf" file for the startphylum and startgenus
+values.  Change the startatfirstphylum=T to startatfirstphylum=F and restart the
+a_rdp_downloader.pl script.
+
+
+
+

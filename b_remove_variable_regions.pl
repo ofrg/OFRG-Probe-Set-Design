@@ -2,14 +2,14 @@
 
 # remove_variable_regions.pl
 #
-# this program loads all sequences in a fasta file (including the RDP mask at the begining)
-# and removes variable regions in all the sequences.  next, it truncates the 5' and 3' ends
+# This program loads all sequences in a fasta file (including the RDP mask at the begining)
+# and removes variable regions in all the sequences.  Next, it truncates the 5' and 3' ends
 # and keeps (only) those sequences which do not have more gaps "inward" of the truncation
-# point. further, it checks the remaining DNA sequence for the presence of ambiguous bases and
-# discards those that have any. gaps are NOT removed. all sequences left over are then saved
-# in per genera files.
+# point. Further, it checks the remaining DNA sequence for the presence of ambiguous bases and
+# discards those that have any. Gaps are NOT removed. All sequences left over are then saved
+# in per genera files; multi-part files (ending in AA, AB, etc.)  are concatenated into one file.
 #
-# the output sequences of this program is used to calculate the distance between them with
+# The output sequences of this program is used to calculate the distance between them with
 # the rdp_column_distance.pl program.
 #
 # Usage: perl remove_variable_regions.pl

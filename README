@@ -1,4 +1,14 @@
-Instructions for running Probe Set Design scripts
+Probe Set Design for Oligonucleotide Fingerprinting of Ribosomal rRNA Genes (OFRG)
+
+OFRG is a hybridization based method for grouping similar rRNA genes. The probes are
+sequentially hybridized to an array of environmentally derived bacterial rRNA genes and
+the hybridization pattern of each probe to each gene on the array becomes that genes'
+fingerprint. Fingerprints can then be clustered using various methods, and the clusters
+represent putative taxonomic groupings of bacteria.
+
+
+
+Instructions for setting up and running Probe Set Design scripts
 
 Requirements:
 
@@ -15,25 +25,29 @@ Requirements:
 	Config::Tiny
 	Bio::SeqIO
 
-4) If you are using a 64-bit machine you may need to download the 64-bit
+4) IMPORTANT: replace the original WinClicker.pm that comes with IEAutomation with the
+	modified version that comes in this zip file, as it has additional functionality
+	required by the rdp_downloader.pl script.
+
+5) If you are using a 64-bit machine you may need to download the 64-bit
 	version of AutoIt v3. Navigate to the IEAutomation folder and replace
 	the AutoItX3.dll with the 64-bit version. Be sure to rename the
 	64-bit .dll file to "AutoItX3.dll".
 
-5) IMPORTANT: replace the original WinClicker.pm that comes with IEAutomation with the
-	modified version that comes in this zip file, as it has additional functionality
-	required by the rdp_downloader.pl script.
+6) MOTHUR must be installed. Download from http://www.mothur.org/. The executable will
+	need to be placed in the directory "d_distances" after that directory has been
+	created by the script "d_column_distances.pl".
 
-6) MOTHUR must be installed. Download from http://www.mothur.org/.
-
-7) best_probes.o must be compiled on your machine. The source code is included.
+7) best_probes.o must be compiled on your machine. The source code is in best_probes.tar
+	and the executable should be in the same directory as the perl scripts.
 
 8) An account must be set up on the Ribosomal Database Project's (RDP) website:
 	http://rdp.cme.msu.edu/. (Masked fasta files are not available for download without
 	an account).
 
 
-The scripts must be run in the following order:
+
+The scripts should all be placed in the same subdirectory and must be run in the following order:
 
 1) rdp_downloader.pl
 2) remove_variable_regions.pl
@@ -51,13 +65,13 @@ The scripts must be run in the following order:
 
 Other notes:
 
+The names of the scripts, as well as the default folder names, have been prepended with letters 
+from a-i, so as to keep them better organized and easier to start from the command line.
+
 The scripts use one of two configuration files (probeset.conf, rdp_downloader.conf), 
 which contain various parameters that can be changed when desired. More detailed information 
 about the parameters can be found in the configuration files themselves. Intermediate 
 directories will be created as the scripts are run.
-
-The names of the scripts, as well as the default folder names, have been prepended with letters 
-from a-k, so as to keep them better organized and easier to start from the command line.
 
 View the headers of the Perl scripts for a description of what each script does.
 
@@ -78,9 +92,14 @@ The largest files can take days to process. If you have access to a cluster runn
 this script will break the task into jobs and automatically submit them via the qsub command.
 
 #makeotus.pl
-Place a copy of the mothur program into the directory holding the distance matrices
+Place a copy of the mothur executable into the directory holding the distance matrices
 (default name is d_distances) before running makeotus.pl but after running column_distance.pl, 
 as the d_distances directory is created by it. Optionally, you may create the directory
-yourself and place the mothur progam in it.
+yourself and place the mothur progam in it even before the distance matrices are made.
+
+The directory "a_maskedfastas" is pre-loaded with a few sample files for the tutorial. It 
+is recommended that you go through the whole tutorial before downloading sequences from RDP, as
+files will be added to this directory and make the tutorial much slower.
+
 
 

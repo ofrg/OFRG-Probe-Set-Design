@@ -14,10 +14,10 @@
 #
 # Usage: perl column_distance_run.pl <fastafilename> <scriptname> <numjobs>
 #
-# fastafilename: 	the fasta filename to calculate distance matrix with
-# scriptname: 		the shellscript name for this/these job/jobs
-# numjobs:				the number of jobs/cpu's to use with Torque's qsub command
-#									this allows a user to break up the jobs into smaller pieces
+# fastafilename: the fasta filename to calculate distance matrix with
+# scriptname:    the shellscript name for this/these job/jobs
+# numjobs:       the number of jobs/cpu's to use with Torque's qsub command
+# this allows a user to break up the jobs into smaller pieces
 # 
 # e.g:
 # perl column_distance_run.pl Bacteria.Bacteroidetes.Bacteroidia.Bacteroidales.Prevotellaceae__Prevotella.nodupe.fa Prev 10
