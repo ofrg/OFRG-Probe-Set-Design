@@ -1,5 +1,13 @@
 package Win32::IEAutomation::WinClicker;
 
+# This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+# 
+# The original version of this package was developed by Prashant Shewale <pvshewale@gmail.com>, and can be
+# found at http://search.cpan.org/~prashant/Win32-IEAutomation-0.5/
+# 
+# New subroutines are denoted by the comment "#added"
+# This version is compatible with the original but has additional functionality
+
 use strict;
 use vars qw($VERSION $warn);
 $VERSION = '0.5';
