@@ -117,7 +117,7 @@ sub send_text{
 	my $window = $self->{autoit}->WinWait($title, "", $wait);
 	if ($window){
 		$self->{autoit}->WinActivate($title);
-		my $t=$self->{autoit}->Send($text);
+		$self->{autoit}->Send($text);
     print "";
 	}else{
 		print "WARNING: No dialog is present with title: $title. Function push_button_yes is timed out.\n" if $warn;
@@ -132,7 +132,7 @@ sub ControlFocus{
 	$wait = 5 unless $wait;
 	my $window = $self->{autoit}->WinWait($title, "", $wait);
 	if ($window){
-		my $t = $self->{autoit}->ControlFocus($id);
+		$self->{autoit}->ControlFocus($id);
     print "";
 	}else{
 		print "WARNING: No dialog is present with title: $title. Function push_button_yes is timed out.\n" if $warn;
